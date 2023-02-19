@@ -1,13 +1,13 @@
 'use strict';
 
 const { faker } = require('@faker-js/faker');
-const database = require('../models');
+const { Equipments } = require('../models');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     const messages = [];
-    const equipments = await database.Equipments.findAll();
+    const equipments = await Equipments.findAll();
     for (let aux = 0; aux < 10; aux++) {
       const equipment = faker.helpers.arrayElement(equipments);
       messages.push({
