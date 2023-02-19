@@ -27,7 +27,7 @@ class FaqController {
         },
       });
     } catch (err) {
-      res.status(HttpStatus.OK).json({ message: err.message });
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
     }
   }
 }

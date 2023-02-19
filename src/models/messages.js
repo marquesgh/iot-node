@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Messages.init(
     {
-      type: DataTypes.ENUM('poweron', 'poweroff', 'timebased'),
+      tag: DataTypes.ENUM('poweron', 'poweroff', 'timebased'),
       value: DataTypes.STRING,
       timestamp: DataTypes.DATE,
       equipment_id: DataTypes.INTEGER,
