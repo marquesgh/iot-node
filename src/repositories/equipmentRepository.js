@@ -1,3 +1,5 @@
+const { Op } = require('sequelize');
+const sequelize = require('sequelize');
 const { Equipments, Messages } = require('../models');
 
 /**
@@ -5,9 +7,73 @@ const { Equipments, Messages } = require('../models');
  */
 class EquipmentRepository {
   /**
+   * Retrieves active equipment.
+   *
+   * @param {number} limit - The maximum number of equipments to retrieve.
+   * @param {number} offset - The number of equipments to skip before starting to retrieve.
+   * @returns {Promise<object>} A promise that resolves with an object containing the equipments and metadata.
+   */
+  static async getActive({ limit, offset }) {
+    const currentTime = new Date();
+    const last30MinutesTime = new Date(currentTime.getTime() - 30 * 60000); // 30 minutes ago
+    const equipments = await Equipments.findAll({
+      limit,
+      offset,
+      attributes: ['imei'],
+      include: [
+        {
+          model: Messages,
+          attributes: [],
+          where: {
+            timestamp: {
+              [Op.gt]: last30MinutesTime,
+            },
+          },
+          raw: true,
+        },
+      ],
+    });
+    return equipments;
+  }
+
+  /**
+   * Retrieves the status of inactive equipments.
+   *
+   * @returns {Promise<object>} A promise that resolves with an object containing the equipments status and metadata.
+   */
+  static async getStatus({ limit, offset }) {
+    const currentTime = new Date();
+    const last30MinutesTime = new Date(currentTime.getTime() - 30 * 60000); // 30 minutes ago
+    const equipments = await Equipments.findAll({
+      limit,
+      offset,
+      attributes: ['imei'],
+      include: [
+        {
+          model: Messages,
+          attributes: ['timestamp'],
+          where: {
+            timestamp: {
+              [Op.lt]: last30MinutesTime,
+            },
+          },
+          raw: true,
+        },
+      ],
+    });
+    const toReturn = await equipments.map((equipment) => {
+      const messageTimestamp = new Date(equipment.Messages[0].timestamp);
+      const diffHours = Math.abs(currentTime.getTime() - messageTimestamp.getTime()) / 3600000;
+      const status = diffHours <= 24 ? 'warning' : 'critical';
+      return { imei: equipment.imei, status: status };
+    });
+    return toReturn;
+  }
+
+  /**
    * Retrieves the number of devices turned on and off.
    *
-   * @returns {Promise<object>} A promise that resolves with an object containing the FAQs and metadata.
+   * @returns {Promise<object>} A promise that resolves with an object containing the equipments and metadata.
    */
   static async getSituation() {
     const equipments = await Equipments.findAll();

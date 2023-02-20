@@ -13,11 +13,11 @@ class FaqController {
    * @returns {Promise<void>} A promise that resolves with the JSON response.
    */
   static async getAll(req, res) {
-    const { page = 1, limit = 10 } = req.query;
-    const offset = (page - 1) * limit;
     try {
+      const { page = 1, limit = 10 } = req.query;
+      const offset = (page - 1) * limit;
       const { count, rows } = await FaqRepository.findAll({ limit, offset });
-      res.json({
+      res.status(HttpStatus.OK).json({
         data: rows,
         meta: {
           totalCount: count,
