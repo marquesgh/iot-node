@@ -6,6 +6,8 @@ const port = 3000;
 
 routes(app);
 
-app.listen(port, () => console.log(`server is running on port ${port}`));
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => console.log(`server is running on port ${port}`));
+}
 
 module.exports = app;
