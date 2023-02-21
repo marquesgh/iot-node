@@ -23,7 +23,6 @@ class FaqController {
           totalCount: count,
           currentPage: page,
           totalPages: Math.ceil(count / limit),
-          perPage: limit,
         },
       });
     } catch (err) {

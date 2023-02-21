@@ -16,7 +16,7 @@ class EquipmentRepository {
   static async getActive({ limit, offset }) {
     const currentTime = new Date();
     const last30MinutesTime = new Date(currentTime.getTime() - 30 * 60000); // 30 minutes ago
-    const equipments = await Equipments.findAll({
+    return Equipments.findAndCountAll({
       limit,
       offset,
       attributes: ['imei'],
@@ -33,7 +33,6 @@ class EquipmentRepository {
         },
       ],
     });
-    return equipments;
   }
 
   /**
@@ -44,7 +43,7 @@ class EquipmentRepository {
   static async getStatus({ limit, offset }) {
     const currentTime = new Date();
     const last30MinutesTime = new Date(currentTime.getTime() - 30 * 60000); // 30 minutes ago
-    const equipments = await Equipments.findAll({
+    const { count, rows } = await Equipments.findAndCountAll({
       limit,
       offset,
       attributes: ['imei'],
@@ -61,13 +60,13 @@ class EquipmentRepository {
         },
       ],
     });
-    const toReturn = await equipments.map((equipment) => {
+    const toReturn = await rows.map((equipment) => {
       const messageTimestamp = new Date(equipment.Messages[0].timestamp);
       const diffHours = Math.abs(currentTime.getTime() - messageTimestamp.getTime()) / 3600000;
       const status = diffHours <= 24 ? 'warning' : 'critical';
       return { imei: equipment.imei, status: status };
     });
-    return toReturn;
+    return { count, toReturn };
   }
 
   /**

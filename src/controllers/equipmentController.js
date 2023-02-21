@@ -16,9 +16,14 @@ class EquipmentController {
     try {
       const { page = 1, limit = 10 } = req.query;
       const offset = (page - 1) * limit;
-      const result = await EquipmentRepository.getActive({ limit, offset });
+      const { count, rows } = await EquipmentRepository.getActive({ limit, offset });
       res.status(HttpStatus.OK).json({
-        data: result,
+        data: rows,
+        meta: {
+          totalCount: count,
+          currentPage: page,
+          totalPages: Math.ceil(count / limit),
+        },
       });
     } catch (err) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
@@ -36,9 +41,14 @@ class EquipmentController {
     try {
       const { page = 1, limit = 10 } = req.query;
       const offset = (page - 1) * limit;
-      const result = await EquipmentRepository.getStatus({ limit, offset });
+      const { count, toReturn } = await EquipmentRepository.getStatus({ limit, offset });
       res.status(HttpStatus.OK).json({
-        data: result,
+        data: toReturn,
+        meta: {
+          totalCount: count,
+          currentPage: page,
+          totalPages: Math.ceil(count / limit),
+        },
       });
     } catch (err) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });

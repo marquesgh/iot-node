@@ -20,7 +20,9 @@
   "homepage": "https://github.com/marquesgh/iot-node#readme",
   "dependencies": {
     "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
     "mysql2": "^3.1.2",
     "path": "^0.12.7",
     "sequelize": "^6.28.0",

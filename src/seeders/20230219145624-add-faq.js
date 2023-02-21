@@ -7,6 +7,12 @@ module.exports = {
       'Faqs',
       [
         {
+          description: 'Error code = MEMORY_FAILURE',
+          solution: 'The device must be restarted.',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
           description: 'Error code = BAD_CONFIGURATION',
           solution: 'Open a technical assistance call.',
           createdAt: new Date(),
