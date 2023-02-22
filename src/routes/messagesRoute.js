@@ -3,6 +3,7 @@ const MessageController = require('../controllers/messageController');
 
 const router = Router();
 
-router.post('/store', MessageController.store);
+router.post('/messages/store', MessageController.store);
+router.get('/messages', MessageController.getAll);
 
 module.exports = router;

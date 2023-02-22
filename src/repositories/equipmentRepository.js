@@ -19,7 +19,7 @@ class EquipmentRepository {
     return Equipments.findAndCountAll({
       limit,
       offset,
-      attributes: ['imei'],
+      attributes: ['imei', 'description'],
       include: [
         {
           model: Messages,

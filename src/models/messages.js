@@ -15,7 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       tag: DataTypes.ENUM('poweron', 'poweroff', 'timebased'),
       value: DataTypes.STRING,
-      timestamp: DataTypes.DATE,
+      timestamp: {
+        type: DataTypes.DATE,
+        get: function () {
+          return this.getDataValue('timestamp').toLocaleString('pt-BR', {});
+        },
+      },
       equipment_id: DataTypes.INTEGER,
     },
     {

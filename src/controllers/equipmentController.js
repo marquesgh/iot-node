@@ -21,7 +21,7 @@ class EquipmentController {
         data: rows,
         meta: {
           totalCount: count,
-          currentPage: page,
+          currentPage: parseInt(page),
           totalPages: Math.ceil(count / limit),
         },
       });
@@ -46,7 +46,7 @@ class EquipmentController {
         data: toReturn,
         meta: {
           totalCount: count,
-          currentPage: page,
+          currentPage: parseInt(page),
           totalPages: Math.ceil(count / limit),
         },
       });

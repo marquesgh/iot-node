@@ -16,6 +16,24 @@ class MessageRepository {
   static async store({ tag, equipment_id, value, timestamp }) {
     return Messages.create({ tag, equipment_id, value, timestamp });
   }
+
+  /**
+   * Retrieves all messages in a paginated format.
+   *
+   * @param {number} limit - The maximum number of messages to retrieve.
+   * @param {number} offset - The number of messages to skip before starting to retrieve.
+   * @returns {Promise<object>} A promise that resolves with an object containing the messages and metadata.
+   */
+  static findAll({ limit, offset }) {
+    return Messages.findAndCountAll({
+      limit,
+      offset,
+      include: {
+        model: Equipments,
+        attributes: ['imei'],
+      },
+    });
+  }
 }
 
 module.exports = MessageRepository;

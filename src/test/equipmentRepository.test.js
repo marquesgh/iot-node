@@ -43,7 +43,12 @@ describe('EquipmentRepository', () => {
     it('returns active equipments', async () => {
       // Call the findAll method and verify the response.
       const result = await EquipmentRepository.getActive({ limit: 10, offset: 0 });
-      expect(JSON.stringify(result)).toBe(JSON.stringify([{ imei: '123456789012345' }]));
+      expect(JSON.stringify(result)).toBe(
+        JSON.stringify({
+          count: 1,
+          rows: [{ imei: '123456789012345', description: 'Equipment 1' }],
+        })
+      );
     });
   });
   describe('findAll', () => {

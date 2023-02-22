@@ -21,7 +21,7 @@ class FaqController {
         data: rows,
         meta: {
           totalCount: count,
-          currentPage: page,
+          currentPage: parseInt(page),
           totalPages: Math.ceil(count / limit),
         },
       });
